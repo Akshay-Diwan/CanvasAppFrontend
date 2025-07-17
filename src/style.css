@@ -1,0 +1,479 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0px;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    min-height: 100%;
+    /* background-color: #f8fbfb; */
+}
+canvas{
+    border: 1px black solid;
+    width: 100%;
+    /* height: 80%; */
+    border: none;
+    /* background-color: #FBFBF8; */
+
+}
+.draw-cursor{
+    cursor: url('public/draw.png') 32 32, auto;
+}
+.erase-cursor{
+    cursor: url('public/eraser.png') 32 32, auto;
+}
+.create-cursor{
+    cursor: crosshair;
+}
+.nw-cursor{
+    cursor: nw-resize;
+}
+.sw-cursor{
+    cursor: sw-resize;
+}
+.ne-cursor{
+    cursor: ne-resize;
+}
+.se-cursor{
+    cursor: se-resize;
+}
+.move-cursor{
+    cursor: move;
+}
+.controls{
+    width: 100%;
+    height: 7vh;
+    margin-top: 10px;
+    position: fixed;
+}
+.toolbar{
+    height: 5vh;
+    width: 90%;
+    margin-inline: auto;
+    display: flex;
+    padding: 25px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 2px black;
+    border-radius: 10px;
+    background-color: white;
+    z-index: 2;
+}
+.button-grp{
+    position: absolute;
+    top: 7vh;
+    right: 3vw;
+    display: flex;
+    flex-direction: column;
+}
+  .share, .save, .show-properties{
+     width : 56px;
+    height: 56px;
+    padding-inline: 10px;
+    padding-block: 10px;
+    margin-inline: 5px;
+    margin-block: 5px;
+    background-color:  #3C096C;
+    color: white;
+    border: 0px;
+    outline: none;
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    font-family: "Nunito", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    align-items: center;
+    justify-content: center;
+    box-shadow:1px 1px 5px #0C090A;
+}
+.show-properties{
+    background: url('../public/61092.png');
+    background-size:50%;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.share{
+    position: relative;
+}
+.participants{
+    position: absolute;
+    top: 80%;
+    left: 80%;
+    color: black;
+    background-color: white;
+    border: black 1px solid;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.50rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+}
+.properties{
+    width: 267px;
+    height: 742px;
+    box-shadow: 0px 0px 2px black;
+    border-radius:10px ;
+    background-color: white;
+    position: fixed;
+    left: 10px;
+    top: 10%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    font-family: "Nunito", serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
+    visibility: hidden;
+  
+}
+.wrapper{
+    display: flex;
+    column-gap: 1.5rem;
+}
+/* Style the range input itself */
+
+  
+  
+.color-btn,.background-color-btn{
+    width: 35px;
+    height: 40px;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+}
+.color-buttons-container button:nth-child(1) {
+    background-color: black;
+}
+.color-buttons-container button:nth-child(2) {
+    background-color: red;
+}
+.color-buttons-container button:nth-child(3) {
+    background-color: blue;
+}
+.color-buttons-container button:nth-child(4) {
+    background-color: green;
+}
+.color-buttons-container button:nth-child(5) {
+    background-color: orange;
+}
+
+.background-color-buttons-container button:nth-child(1) {
+    background-color: transparent;
+    background-image: url('/transparentBG.png');
+    background-size:200%;
+    background-position: center;
+}
+.background-color-buttons-container button:nth-child(2) {
+    background-color: #E8C7C8;
+}
+.background-color-buttons-container button:nth-child(3) {
+    background-color: #87CEEB;
+}
+.background-color-buttons-container button:nth-child(4) {
+    background-color: #D3EEDD;
+}
+.background-color-buttons-container button:nth-child(5) {
+    background-color: #FFFFBF;
+}
+
+.color-input{
+    width: 40px;
+    height: 50px;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    background-color: transparent;
+}
+
+label, p, input[type="text"]{
+    font-family: "Nunito", serif;
+    font-weight: 500;
+    font-style: normal;
+    padding-block: 10px;
+ }
+
+.toolbar button{
+    border: 0px;
+    border-radius: 7px;
+    background-color: transparent;
+    padding: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.toolbar button:hover, #lock-image:hover{
+    background-color: rgb(222, 222, 222);
+}
+.selected-button{
+    background-color: rgb(66, 66, 66);
+}
+
+.flex-h{
+    display: flex;
+    width: 100%;
+    justify-content:left;
+    gap: 10px;
+    align-items: center;
+}
+
+.to-bottom{
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /* margin-left: 5%; */
+}
+.user-text{
+    position: absolute;
+    width: auto;
+    height: auto;
+    border: none;
+    background-color: transparent;
+    field-sizing: content;
+    line-height: 1.2;
+    /* overflow-y: hidden; */
+    overflow-x: hidden;
+}
+.user-text:focus{
+    outline: none;
+}
+
+.share:hover{
+    cursor: pointer;
+    background-color: #240046;
+}
+.save{
+    background-color: #E5E4E2;
+    color: #0C090A;
+}
+.save:hover{
+    cursor: pointer;
+    background-color: #B6B6B4;
+}
+button:hover, #lock-image:hover{
+    cursor: pointer;
+}
+input:hover{
+    cursor: pointer;
+}
+
+button img{
+    width: 30px; 
+}
+#lock{
+    width:0px;
+}
+#lock-label{
+    margin: 0px;
+}
+#lock-image{
+    opacity: 0.7;
+    width: 32px;
+    border-radius: 2px;
+    padding: 5px;
+}
+#lock:checked + #lock-image{
+    background-color: rgb(160, 160, 160);
+}
+
+.trial{
+    position: absolute;
+    right: 10px;
+    min-height: 100px;
+    min-width: 30%;
+    top: 10%;
+    border: black solid 5px;
+}
+.dialog-box{
+    border: 0px;
+    margin-top: 5%;
+    margin-inline: auto;
+    padding: 0px;
+    width: 90%;
+    height: 23%;
+    z-index: 1;
+    text-align: center;
+    /* padding: 10px; */
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px black;
+    
+}
+.dialog-box.host,.dialog-box.participant{
+    height: 50%;
+}
+
+.dialog-box::backdrop{
+    background: rgba(0, 0, 0, 0.174);
+    
+}
+.collab-link{
+    background-color: #b6b6b473;
+    text-align: left;
+    width: 90%;
+    margin: auto;
+    padding: 0.5em;
+    font-size: 1.25rem;
+    position: relative;
+
+}
+.copy-button{
+    background-color: transparent;
+    border: 0px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: 100%;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.5;
+
+}
+.copy-button:hover{
+    background-color: rgba(0, 0, 0, 0.463);
+    cursor: pointer;
+   
+}
+.nunito{
+    font-family: "Nunito", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+.poppins-regular {
+    font-family: "Poppins", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+.dialog-box-heading,.stop-box-heading{
+    
+    font-family: "Poppins", serif;
+    font-weight: 600;
+    color: #3C096C;
+    /* color: #0073cf; */
+    font-style: normal;
+    font-size: 1.75rem;
+    margin-top: 10px;
+    
+}
+.dialog-box-text{
+    font-size: 0.9rem;
+}
+.startLive{
+    background-color: #3C096C;
+    color: whitesmoke;
+    outline: none;
+    border: 0px;
+    padding-inline: 15px;
+    padding-block: 3px;
+    font-size: 1rem;
+    border-radius: 7px;
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 7px;
+    align-items: center;
+}
+.play-button{
+    width: 20px;
+    display: inline;
+    margin: 0px;
+}
+.stop-box-heading{
+    padding: 0px;
+    margin-inline: 0px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #0C090A;
+}
+.username-label{
+    width: 90%;
+    text-align: left;
+    margin: auto;
+    font-size: 1.051rem;
+}
+.username-input, .collab-link{
+    background-color: #b6b6b473;
+    width: 90%;
+    padding: 0.5em;
+    font-size: 1rem;
+    outline: none;
+    border: 0px;
+    border-radius: 10px;
+}
+.username-input:hover{
+    cursor:text;
+    outline: none;
+    border: 0px;
+}
+.start-session{
+    text-align: left;
+    padding-left: 5em;
+    padding-top: 2em;
+}
+.startLive:hover{
+    background-color: #4b2d81;
+
+}
+@media screen  and (min-width: 556px){
+    .dialog-box{
+        width: 400px;
+        margin-top: 2%;
+        height: 27%;    
+    }
+}
+@media screen  and (min-width: 1440px){
+    .toolbar{
+    width: 691px;
+    }
+    .share, .save{
+        width: auto;
+        height: auto;
+    margin-block: 0px;
+
+        border-radius: 10px;
+        /* border: #0C090A 1px solid; */
+        box-shadow: 0px 0px 0px;
+
+    }
+.button-grp{
+    top: 10px;
+    right: 10px;
+    flex-direction: row;
+}
+}
+@media screen and (min-width: 1250px){
+    .properties{
+    width: 19%;
+    height: 70%;
+    }
+}
+@media screen and (min-width: 960px){
+     .show-properties{
+        /* visibility: hidden; */
+        display: none;
+    }
+}
+
+::-webkit-scrollbar{
+    display: none;
+}
