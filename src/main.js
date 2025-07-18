@@ -26,7 +26,7 @@ let ck = 0;
 
 let sharing = false;
 if(localStorage.getItem('shapes')) shapes = JSON.parse(localStorage.getItem('shapes'));
-const socket = io('https://canvasappbackend.onrender.com');
+const socket = io('http://localhost:8080');
 socket.on('creating shape', (currentShape)=>{
   console.log('here we are in recieved messsage', currentShape);
   clearCanvas();
@@ -487,8 +487,10 @@ if(locked){
       currentShape.width,
       currentShape.length
     );
+    console.log("Mei yaha chala");
     shapes.map(shape => shapeCreator[shape.createShape](shape));
-    if(currentShape.createShape) shapeCreator[currentShape.createShape](currentShape);
+    console.log(shapes)
+    if(currentShape.createShape && currentShape.createShape !== 'createTextField') shapeCreator[currentShape.createShape](currentShape);
 
     const editingRectindex = shapes.map((rectangle) => inRange(rectangle, {mouseX, mouseY}, fixedCorner)).indexOf(true);
   if (
@@ -526,6 +528,7 @@ if(locked){
      permission = true;
 }
        // || MOVE RECTANGLE CODE ENDS
+       
 return;
 }
 };
@@ -565,7 +568,7 @@ let [mouseX, mouseY] = scaleMousePosition(e.pageX, e.pageY)
     canvas.classList.remove("move-cursor");
     canvas.classList.remove("ne-cursor","se-cursor","nw-cursor", "sw-cursor")
    }
-  }
+  }   
     return;
   }
   console.log(`mouse x: ${e.pageX}, mouse y: ${e.pageY}`)
@@ -728,7 +731,7 @@ const handleMouseUp = () => {
   else {
     locked = true;
   }
-  if(!currentShape || currentShape.name === null){
+  if(!currentShape || currentShape.name === null || currentShape.createShape === 'createTextField'){
     return;
   }
   shapes = [...shapes, { ...currentShape }];
@@ -788,6 +791,13 @@ const handledblclick = (e)=>{
 }
 // || MOUSE EVENTS END
 // || TOUCH EVENTS START
+let latest_touch = null; 
+let latest_touch_time = null;
+function calDistance(touch1, touch2){
+  const x = touch1.pageX - touch2.pageX;
+  const y = touch1.pageY - touch2.pageY;
+  return Math.sqrt(x*x + y*y);
+}
 const handleTouch = (e, callback)=>{
     e.preventDefault();
     // if(scroll){
@@ -796,8 +806,18 @@ const handleTouch = (e, callback)=>{
     console.log("pencil detected");
     let touch = e.touches[0];
     let coordinates = { 
-      clientX: touch.clientX,
-      clientY: touch.clientY 
+      pageX: touch.pageX,
+      pageY: touch.pageY
+    }
+    if(callback === handleMouseDown && latest_touch_time !== null && new Date().getTime() - latest_touch_time < 500  && calDistance(touch, latest_touch) < 10){
+      handledblclick(touch);
+      latest_touch = e.touches[0];
+      latest_touch_time = new Date().getTime();
+      return;
+    }
+    if(callback === handleMouseDown) {
+      latest_touch = e.touches[0];
+      latest_touch_time = new Date().getTime();
     }
     callback(coordinates);
   }
@@ -1011,20 +1031,30 @@ function copyToClipboard(){
 export function handleTextFieldChange(e){
   console.log("Inside handleTextField : " + e.target.value)
     let text_field_index = shapes.findIndex(shape => shape.name === e.target.id);
-    let text_field_shape = shapes[text_field_index]
+    let text_field_shape = {...shapes[text_field_index]}
+    const otherShapes = [...shapes.filter(shape => shape.name !== e.target.id)]
     console.log("Text Field Index: ");
     console.log(text_field_index);
     console.log("Text Field Shape");
     console.log(text_field_shape);
     text_field_shape.text = e.target.value;
-    shapes[text_field_index] = text_field_shape;
+    shapes = [...otherShapes, text_field_shape];
+    localStorage.setItem('shapes', JSON.stringify(shapes));
+    console.log("INSIDE HANDLE TEXT FIELD...")
     console.log(shapes);
+    sendToServer('change in shapes',shapes);
+    // console.log(shapes);
     console.log(currentShape);
     console.log(command);
     clearCanvas();
     shapes.map((shape)=>shapeCreator[shape.createShape](shape));
 
+
   }
+ export function onblur(e) {
+    e.target.removeEventListener('blur', onblur);
+    document.body.removeChild(e.target);
+};
 // // Initial resize
 resizeCanvas();
 

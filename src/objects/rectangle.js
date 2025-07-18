@@ -1,5 +1,5 @@
 import canvas from './Dom.js'
-import { handleMouseMove, handleTextFieldChange } from '../main.js';
+import { handleMouseMove, handleTextFieldChange, onblur } from '../main.js';
 export function dashedBorder(x, y, width, length){
   if (canvas.getContext) {
     const ctx = canvas.getContext("2d");
@@ -175,7 +175,7 @@ export function createRectangle(rectangle){
       textfield.style.left = `${shape.x}px`;
       textfield.addEventListener("change", (e)=> handleTextFieldChange(e));
       textfield.addEventListener("mousemove", (e) => handleMouseMove(e));
-      
+      textfield.addEventListener("blur", (e) => onblur(e))
       // ctx.strokeRect(shape.x, shape.y, shape.width, shape.length)
       let duplicates = document.querySelectorAll(`#${textfield.id}`);
       duplicates.forEach(duplicate => duplicate.remove());
