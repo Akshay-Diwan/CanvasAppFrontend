@@ -26,7 +26,7 @@ let ck = 0;
 
 let sharing = false;
 if(localStorage.getItem('shapes')) shapes = JSON.parse(localStorage.getItem('shapes'));
-const socket = io('http://localhost:8080');
+const socket = io('https://canvasappbackend.onrender.com');
 socket.on('creating shape', (currentShape)=>{
   console.log('here we are in recieved messsage', currentShape);
   clearCanvas();
